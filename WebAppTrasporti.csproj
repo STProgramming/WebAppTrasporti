@@ -34,6 +34,10 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="Data\Database\" />
+    <Folder Include="Data\Interfaces\" />
+    <Folder Include="Data\Models\InputModels\" />
+    <Folder Include="Data\Services\" />
   </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
