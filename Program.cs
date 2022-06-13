@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,10 +59,44 @@ builder.Services.AddAuthentication("MyWEBAPPTrasportiIdentity").AddCookie("MyWEB
     option.LoginPath = "/login";
 });
 
-builder.Services.AddAuthorization(options => 
+#region Claims Role Initialization
+
+builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("UserRole", policy => policy.RequireClaim(Cl))
-})
+    options.AddPolicy("UserRole", policy => policy.RequireClaim(ClaimTypes.Role, "User"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("SeoRole", policy => policy.RequireClaim(ClaimTypes.Role, "Seo"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("LogisticRole", policy => policy.RequireClaim(ClaimTypes.Role, "Logistic"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HRRole", policy => policy.RequireClaim(ClaimTypes.Role, "HR"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("DriverRole", policy => policy.RequireClaim(ClaimTypes.Role, "Driver"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("CustomerRole", policy => policy.RequireClaim(ClaimTypes.Role, "Customer"));
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminRole", policy => policy.RequireClaim(ClaimTypes.Role, "Admin"));
+});
+
+#endregion
 
 builder.Services.AddControllersWithViews();
 #endregion
@@ -76,8 +111,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
+app.UseAuthentication();
+app.UseAuthorization();
 app.UseRouting();
-
 
 app.MapControllerRoute(
     name: "default",
